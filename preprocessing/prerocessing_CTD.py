@@ -13,26 +13,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 import scipy.io as sio 
-
-
-
-def set_cbar(fig, c, title, ax):  
-    # if ax==ax2:
-    #     cbar = plt.colorbar(c, format='%.0f', spacing='proportional', ax=ax, shrink=0.9, pad = 0.01,
-    #                         orientation = 'vertical', location = "right")
-    # elif ax==ax3:
-    #     cbar = plt.colorbar(c, format='%.2f', spacing='proportional', ax=ax, shrink=0.9, pad = 0.01,
-    #                         orientation = 'vertical', location = "right")
-    # else:
-    cbar = plt.colorbar(c, format='%.1f', spacing='proportional', ax=ax, shrink=0.9, pad = 0.01,
-                        orientation = 'vertical', location = "right")
-
-    cbar.set_label(label = title, fontsize = 35, y = 0.5, labelpad = 30)
-    cbar.ax.tick_params(which='minor', size=15, width=1, color='k', direction='in')
-    cbar.ax.tick_params(which='major', size=20, width=1, color='k', direction='in', labelsize = 30)
-    # fig.subplots_adjust(bottom=0.25)
-        # cbar.ax.set_position([0.2, 0.08, 0.6, 0.08])
-    return cbar
 #%%
 path = "/home/serena/Scrivania/Magistrale/thesis/data/TRANSECTS/2019/"
 
@@ -115,14 +95,14 @@ data_nobad = np.delete(data, 253, axis=0)
 
 #%%SELECT ONLY INTRESTIN VARIABLES
 #interesting column
-indices_col = [0, 2, 7, 19, 20, 22, 24]
+indices_col = [0, 1, 2, 7, 19, 20, 22, 24]
 
 # Creazione della nuova matrice selezionando solo le colonne desiderate
 variables = data_nobad[:, indices_col]
 
 #save as csv
 #Add col names
-column_names = ['Cast_num', 'temperature', 'fluorecence', 'depth', 'salinity', 'oxigen', 'density']
+column_names = ['Cast_num', 'pressure','temperature', 'fluorecence', 'depth', 'salinity', 'oxigen', 'density']
 
 # Convert to DataFrame
 ctd_tn368 = pd.DataFrame(variables, columns=column_names)
@@ -135,20 +115,24 @@ loc = pd.read_csv(infile)
 filedata = path + 'ctd_tn368.csv'
 ctd = pd.read_csv(filedata)
 
-
 lat = []
 lon = []
 day = []
+station = []
 for i in ctd.Cast_num:
     sub = loc[loc.Cast_num ==i]
     lati = sub.latitude.item()
     loni = sub.longitude.item()
     dayi = sub.Date.item()
+    stati = sub.Station.item()
     lat.append(lati)
     lon.append(loni)
     day.append(dayi)
+    station.append(stati)
 ctd['lat'] = lat
 ctd['lon'] = lon
 ctd['day'] = day
+ctd['station'] = station
+
 ctd.to_csv(path + 'ctd_tn_withlocation.csv')
 
