@@ -196,7 +196,8 @@ cbar.set_label(label = "Depth [m]", fontsize = 20)
 fig.tight_layout()
 
 
-#%%COHERENCE ANALYSIS => WELCH METHOD BETWEEN CHLOROPHYLL ANDMERIDONAL TRANSPORT
+#%%COHERENCE ANALYSIS => WELCH METHOD BETWEEN CHLOROPHYLL AND MERIDONAL TRANSPORT
+#setting
 sr = 1/86400
 segment = 1800 #1800 = sesonal -> variability less than 6 months
 myhann = signal.get_window('hann', segment)
